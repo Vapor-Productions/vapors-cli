@@ -1,0 +1,37 @@
+{
+  "name": "@vaporproductions/vapors-cli",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "bin": {
+    "vapors-cli": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "postbuild": "node scripts/add-shebang.mjs",
+    "prepublishOnly": "npm run build",
+    "dev": "tsx src/index.ts",
+    "cli": "tsx src/index.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format .",
+    "format:fix": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
+    "@types/node": "^22.10.10",
+    "tsx": "^4.20.3",
+    "typescript": "5.7.3"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.975.0"
+  }
+}
