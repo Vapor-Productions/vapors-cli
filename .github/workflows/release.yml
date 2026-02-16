@@ -25,6 +25,14 @@ jobs:
           VERSION=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=v${VERSION}" >> $GITHUB_OUTPUT
+          # Only vx.0.0 is a full release; all others are prerelease
+          MINOR=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version.split('.')[1]")
+          PATCH=$(node -p "JSON.parse(require('fs').readFileSync('package.json','utf8')).version.split('.')[2]")
+          if [ "$MINOR" = "0" ] && [ "$PATCH" = "0" ]; then
+            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+          else
+            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+          fi
 
       - name: Check if tag exists
         id: tag_check
@@ -43,5 +51,6 @@ jobs:
           tag_name: ${{ steps.version.outputs.tag }}
           name: Release ${{ steps.version.outputs.tag }}
           generate_release_notes: true
+          prerelease: ${{ steps.version.outputs.is_prerelease }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
