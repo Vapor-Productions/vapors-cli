@@ -23,14 +23,11 @@ jobs:
 
       - name: Install
         run: npm ci
-        working-directory: vapors-cli
 
       - name: Build
         run: npm run build
-        working-directory: vapors-cli
 
       - name: Publish
         run: npm publish --access public
-        working-directory: vapors-cli
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
